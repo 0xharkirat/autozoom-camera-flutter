@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tflite/flutter_tflite.dart';
 import 'package:test/components/image_display_screen.dart';
+import 'package:tflite/tflite.dart';
 
 class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({super.key, required this.camera});
@@ -28,11 +28,17 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
       ResolutionPreset.max,
     );
 
+    int imageCount = 0;
+
     // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller
         .initialize()
         .then((value) => _controller.startImageStream((image) {
-              _objectDetector(image);
+              imageCount++;
+              if (imageCount % 10 == 0) {
+                imageCount = 0;
+                _objectDetector(image);
+              }
             }));
   }
 
@@ -64,11 +70,7 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
         asynch: true,
         imageHeight: image.height,
         imageWidth: image.width,
-        imageMean: 127.5,
-        imageStd: 127.5,
-        numResults: 1,
-        rotation: 90,
-        threshold: 0.4);
+        );
 
     if (detector != null) {
       log("Result is $detector");
