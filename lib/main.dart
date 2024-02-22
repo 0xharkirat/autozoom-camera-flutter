@@ -11,7 +11,7 @@ Future<void> main() async {
 
   final cameras = await availableCameras();
 
-  final firstCamera = await cameras.first;
+  final firstCamera = cameras.first;
 
   runApp(
     MaterialApp(
