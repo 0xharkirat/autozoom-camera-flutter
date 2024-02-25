@@ -17,6 +17,9 @@ class TakePictureScreen extends StatefulWidget {
 class _TakePictureScreenState extends State<TakePictureScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  late String label;
+
+  var x,y
 
   _init() {
     // To display the current output from the Camera,
@@ -25,10 +28,11 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
       // Get a specific camera from the list of available cameras.
       widget.camera,
       // Define the resolution to use.
-      ResolutionPreset.max,
+      ResolutionPreset.medium,
     );
 
     int imageCount = 0;
+    label = "";
 
     // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller
@@ -53,6 +57,7 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+    Tflite.close();
   }
 
   _initTFLite() async {
@@ -70,10 +75,15 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
         asynch: true,
         imageHeight: image.height,
         imageWidth: image.width,
-        );
+        numResults: 1);
 
-    if (detector != null) {
-      log("Result is $detector");
+    if (detector != null && detector.isNotEmpty) {
+      final detectedObject = detector.first;
+
+      if (detectedObject['confidence'] * 100 > 45) {
+        label = detectedObject['label'].toString();
+        h = detectedObject['rect']['h']
+      }
     }
   }
 
