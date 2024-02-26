@@ -1,24 +1,25 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:test/components/take_picture_screen.dart';
-
+import 'package:flutter/services.dart';
+import 'package:test/screens/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final cameras = await availableCameras();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  final firstCamera = cameras.first;
-
-  runApp(
-    MaterialApp(
-      theme: ThemeData.dark(),
-      home: TakePictureScreen(
-        // Pass the appropriate camera to the TakePictureScreen widget.
-        camera: firstCamera,
-      ),
-    ),
-  );
+  runApp(const MyApp());
 }
 
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'AutoZoom Camera Flutter',
+      theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
+      darkTheme: ThemeData.dark(),
+      home: const HomeScreen(),
+    );
+  }
+}
