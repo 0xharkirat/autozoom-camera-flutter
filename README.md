@@ -13,10 +13,11 @@ Also saves the zoomed in image to the photos or DCIM folder on IOS & Android res
 <p align="center">
  
  ### Android 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/m4n8GqSb_yQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Android Demo](https://img.youtube.com/vi/m4n8GqSb_yQ/0.jpg)](https://www.youtube.com/watch?v=m4n8GqSb_yQ)
+
 
 ### iOS
-<iframe width="560" height="315" src="https://www.youtube.com/embed/AkChtczrh6g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![iOS Demo](https://img.youtube.com/vi/AkChtczrh6g/0.jpg)](https://www.youtube.com/watch?v=AkChtczrh6g)
 
 </p>
 
