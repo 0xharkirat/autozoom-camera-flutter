@@ -4,8 +4,9 @@ import 'package:test/models/recognition.dart';
 /// Individual bounding box
 class BoxWidget extends StatelessWidget {
   final Recognition result;
+  final Function(Recognition) onDoubleTap;
 
-  const BoxWidget({super.key, required this.result});
+  const BoxWidget({super.key, required this.result, required this.onDoubleTap});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class BoxWidget extends StatelessWidget {
       height: result.renderLocation.height,
       child: GestureDetector(
         onDoubleTap: () {
-          print("tapped on ${result.label}");
+          onDoubleTap(result);
         },
         child: Container(
           width: result.renderLocation.width,

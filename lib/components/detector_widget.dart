@@ -40,6 +40,10 @@ class _DetectorWidgetState extends State<DetectorWidget>
 
   int frameCount = 0;
 
+  void onDoubleTapDetected(Recognition result) {
+    print("double tapped on ${result.label}");
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -133,7 +137,10 @@ class _DetectorWidgetState extends State<DetectorWidget>
       return const SizedBox.shrink();
     }
     return Stack(
-      children: results!.map((box) => BoxWidget(result: box)).toList(),
+      children: results!
+          .map(
+              (box) => BoxWidget(result: box, onDoubleTap: onDoubleTapDetected))
+          .toList(),
     );
   }
 
