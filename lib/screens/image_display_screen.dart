@@ -1,6 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:intl/intl.dart';
 import 'package:test/utils/permissions.dart';
 
@@ -17,53 +20,70 @@ class ImageDisplayScreen extends StatelessWidget {
       final timestamp = DateTime.now();
       var newFormat = DateFormat("yMMdd_HmsSSS"); // YYYYMMDD_HHMMSS
       String updatedDt = newFormat.format(timestamp);
-
-      final imagePath = '/storage/emulated/0/DCIM/Camera/IMG_$updatedDt.jpg';
-      
-
       final File imageFile = File(displayPath);
 
-      try {
-        // Copy the image file to the specified path
-        await imageFile.copy(imagePath);
-        Navigator.of(context).pop();
-         ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          showCloseIcon: true,
-          behavior: SnackBarBehavior.floating,
-          content: Text("Saved at DCIM/Camera/IMG_$updatedDt.jpg")));
-        // Show a message or perform any additional actions if needed
-        print('Image saved successfully: $imagePath');
-        // You may also want to show a snackbar or a toast to indicate successful save
-      } catch (e) {
-        print('Error saving image: $e');
-        // Handle error if necessary
+      if (Platform.isIOS) {
+        try {
+          Uint8List bytes = imageFile.readAsBytesSync();
+
+          final result =
+              await ImageGallerySaver.saveImage(bytes.buffer.asUint8List());
+
+          log('$result');
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              showCloseIcon: true,
+              behavior: SnackBarBehavior.floating,
+              content: Text('Image saved in photos.')));
+          // Show a message or perform any additional actions if needed
+        } catch (e) {
+          log(e.toString());
+        }
+
+        // print(documents.path);
+      } else {
+        final imagePath = '/storage/emulated/0/DCIM/Camera/IMG_$updatedDt.jpg';
+        try {
+          // Copy the image file to the specified path
+          await imageFile.copy(imagePath);
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              showCloseIcon: true,
+              behavior: SnackBarBehavior.floating,
+              content: Text("Saved at DCIM/Camera/IMG_$updatedDt.jpg")));
+          // Show a message or perform any additional actions if needed
+          log('Image saved successfully: $imagePath');
+          // You may also want to show a snackbar or a toast to indicate successful save
+        } catch (e) {
+          log('Error saving image: $e');
+          // Handle error if necessary
+        }
       }
-
-      // if (Platform.isIOS) {
-      //   final documents = await getApplicationDocumentsDirectory();
-      //   file = File('${documents.path}/live_darbar_$timestamp.mp3');
-      //   // print(documents.path);
-      // } else {
-      //   file = File('/storage/emulated/0/Music/live_darbar_$timestamp.mp3');
-      // }
     }
-
-    // cancel the stream
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Display the picture"),
+        title: const Text("Image Preview"),
       ),
-      body: Center(child: Image.file(File(displayPath))),
+      body: Dialog(
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+        insetPadding: const EdgeInsets.all(8),
+        child: Center(
+          child: Image.file(
+            File(displayPath),
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _saveImage(context);
         },
-        child: Icon(Icons.save_alt),
+        child: const Icon(Icons.save_alt),
       ),
     );
   }

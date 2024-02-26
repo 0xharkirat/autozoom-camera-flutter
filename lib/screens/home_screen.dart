@@ -4,6 +4,7 @@ import 'package:test/models/screen_params.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text("Autozoom Camera Flutter"),
       ),
       body: const DetectorWidget(),
+      
     );
   }
 }

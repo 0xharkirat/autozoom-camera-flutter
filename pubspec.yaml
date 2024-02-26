@@ -19,6 +19,7 @@ dependencies:
   tflite_flutter: ^0.10.4
   image: ^4.1.7
   exif: ^3.3.0
+  image_gallery_saver: ^2.0.3
   
 
 dev_dependencies:

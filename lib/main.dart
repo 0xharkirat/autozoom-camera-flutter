@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'AutoZoom Camera Flutter',
       theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
       darkTheme: ThemeData.dark(),
