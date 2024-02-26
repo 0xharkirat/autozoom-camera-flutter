@@ -38,6 +38,8 @@ class _DetectorWidgetState extends State<DetectorWidget>
 
   Map<String, String>? stats;
 
+  int frameCount = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -68,6 +70,7 @@ class _DetectorWidgetState extends State<DetectorWidget>
   ///
   void _initializeCamera() async {
     cameras = await availableCameras();
+
     _cameraController = CameraController(
       cameras[0],
       ResolutionPreset.medium,
@@ -136,7 +139,12 @@ class _DetectorWidgetState extends State<DetectorWidget>
 
   /// Callback to receive each fram [CameraImage] perform inference on it
   void onLatestImageAvailable(CameraImage cameraImage) async {
-    _detector?.processFrame(cameraImage);
+    frameCount++;
+    if (frameCount % 10 == 0) {
+      frameCount = 0;
+
+      _detector?.processFrame(cameraImage);
+    }
   }
 
   @override
