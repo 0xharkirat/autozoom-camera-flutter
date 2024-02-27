@@ -3,14 +3,18 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:intl/intl.dart';
+import 'package:test/models/recognition.dart';
 import 'package:test/utils/permissions.dart';
 
 class ImageDisplayScreen extends StatelessWidget {
-  const ImageDisplayScreen({super.key, required this.displayPath});
+  const ImageDisplayScreen(
+      {super.key, required this.displayPath, required this.result});
 
   final String displayPath;
+  final Recognition? result;
 
   void _saveImage(BuildContext context) async {
     bool hasPermission = await PermissionHandler.checkStoragePermission();
@@ -46,6 +50,7 @@ class ImageDisplayScreen extends StatelessWidget {
         final imagePath = '/storage/emulated/0/DCIM/Camera/IMG_$updatedDt.jpg';
         try {
           // Copy the image file to the specified path
+
           await imageFile.copy(imagePath);
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).removeCurrentSnackBar();
@@ -66,6 +71,9 @@ class ImageDisplayScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String info = result == null
+        ? "Captured Without Zooming."
+        : "Object Captured: ${result!.label}, score: ${result!.score.toStringAsFixed(2)}";
     return Scaffold(
       appBar: AppBar(
         title: const Text("Image Preview"),
@@ -73,10 +81,16 @@ class ImageDisplayScreen extends StatelessWidget {
       body: Dialog(
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         insetPadding: const EdgeInsets.all(8),
-        child: Center(
-          child: Image.file(
-            File(displayPath),
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.file(
+              File(displayPath),
+            ),
+            Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(info))
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

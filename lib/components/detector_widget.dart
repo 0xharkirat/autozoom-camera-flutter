@@ -36,6 +36,7 @@ class _DetectorWidgetState extends State<DetectorWidget>
 
   /// Results to draw bounding boxes
   List<Recognition>? results;
+  Recognition? onTappedObject;
 
   int frameCount = 0;
   bool isZoomed = false;
@@ -50,6 +51,8 @@ class _DetectorWidgetState extends State<DetectorWidget>
       isZoomed = true;
     });
     await _controller.setZoomLevel(2.0);
+
+    onTappedObject = result;
 
     // Start the animation
   }
@@ -99,7 +102,9 @@ class _DetectorWidgetState extends State<DetectorWidget>
   Widget build(BuildContext context) {
     // Return empty container while the camera is not initialized
     if (_cameraController == null || !_controller.value.isInitialized) {
-      return const Center(child: CircularProgressIndicator(),);
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
     }
 
     var aspect = 1 / _controller.value.aspectRatio;
@@ -188,9 +193,11 @@ class _DetectorWidgetState extends State<DetectorWidget>
             MaterialPageRoute(
               builder: (context) => ImageDisplayScreen(
                 displayPath: image.path,
+                result: onTappedObject,
               ),
             ),
           );
+          onTappedObject = null;
         } catch (e) {
           log("$e");
         }
