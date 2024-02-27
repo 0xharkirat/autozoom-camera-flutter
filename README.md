@@ -7,7 +7,8 @@ A Flutter app which detects the objects using Tensor Flow's [tflite_flutter](htt
 Also saves the zoomed in image to the photos or DCIM folder on IOS & Android respectively.
 
  - [Android APK download from here](https://drive.google.com/file/d/1wYmIvahszKV9sy-XYFArbeKz0GrJkmZR/view?usp=sharing)
- - Currently, for IOS, you need to build for your own device locally. I have submitted the app for test Flight, once approved, I will share the link with you can directly install app from test flight. OR send me your email on slack DM, I can send you the invite for internal testing.
+ - [iOS Link](https://testflight.apple.com/join/sYyHEn8m) - it will ask you to download the test flight app for testing in beta.
+ - or follow the steps in [Building app on your machine](#building-app-on-your-machine)
 
 ## App Videos
 <p align="center">
